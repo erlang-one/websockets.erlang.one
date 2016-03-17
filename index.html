@@ -1,0 +1,289 @@
+<!-- <!DOCTYPE html> -->
+<html lang="en-us">
+    <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <link href='/websockets.css' type='text/css' rel='stylesheet'>
+        <title>Websockets – Erlang One</title>
+    </head>
+    <body>
+        <nav id="globalnav" role="navigation">
+            <div class="content">
+                <div class="list">
+                    <div class="item">
+                        <a href="http://spawnproc.com/">Spawnproc</a>
+                    </div>
+                    <div class="item">
+                        <a href="http://synrc.com/">Synrc</a>
+                    </div>
+                    <div class="item">
+                        <a href="http://erlangonxen.org">EoX</a>
+                    </div>
+                    <div class="item">
+                        <a href="http://voxoz.com">Voxoz</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <nav id="localnav" class="sticky" role="navigation">
+            <div class="content">
+                <div class="list">
+                    <h2 class="nav-title">
+                        <a href="/">Cool Stories</a>
+                    </h2>
+                    <div class="menu-tray">
+                        <a href="http://erlang.one/">Erlang One</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="main">
+            <div class="content">
+                <header class="underline">
+                    <h1 class="title">Мифы про WebSockets</h1>
+                    <!-- <div class="title-additionally">with Retina display</div> -->
+                    <div class="epigraph">
+                        – Это просто какой-то позор<br>
+                    </div>
+                    <div class="note">Собачье Сердце</div>
+                    <figure class="overview-hero"></figure>
+                </header>
+                <section class="section underline">
+                    <!-- <div class="hero"></div> -->
+                    <h2>Интро</h2>
+                    <!-- <h3></h3> -->
+                    <div class="list center">
+                        <p>
+                            Многие люди, которые хотят попробовать N2O, пишут мне о том, что их клиенты якобы сомневаются в том, что WebSocket протокол достаточно матурный и поддерживается браузерами и ИТ сообществом. Просят помощи в разъяснении, что к чему.
+                        </p>
+                        <p>
+                            Я лично никого не заствляю писать на Эрланге и использовать Вебсокеты, так как и так клиентов у меня больше чем я успеваю обслуживать. Но ко мне обратились очень влиятельные люди, и очень корректно попросили помощи в разяснении этого вопроса.
+                        </p>
+                    </div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="hero"></div> -->
+                    <h2>
+                        1. WebSocket's дырявый, я читал в инетренте, что там был секюрити Issue, не помню какой, но мне говорил об этом очень влиятельный человек.
+                    </h2>
+                    <!-- <h3>The trackpad, pushed even further.</h3> -->
+                    <div class="list center">
+                        <p>
+                            Ни одна не технология не обходилась без секюрных заплаток. Люди которые обсуждают это, как правило приводят ссылки на эксперементальные версии протоколов HyBi,
+                        </p>
+                        <p>
+                        и почему-то никогда не приводят официальный RFC документ 6455, дата выпуска которого на год младше сообщений об уязвимостях.<span id="note2"></span>
+                        </p>
+                    </div>
+                </section>
+                <section class="section underline">
+                <!-- <div class="hero"></div> -->
+                <h2>
+                    2. Я читал что в Зимбабве, стране стратегическом партнере России, вебсокеты не проксируются у мобильного оператора ZIMBCELL
+                </h2>
+                <!-- <h3>Torgether they make quicker work of everything.</h3> -->
+                <div class="list center">
+                    <p>
+                        Такое могло наблюдаться только в том случае, если в каких-то дешевых сетях, криворукие админы, не смогли разобраться в топологии сети. Конечно при появлении Вебсокетов нужно было качать nginx модули, впиливать их пересобирать, но сейчас
+                    </p>
+                    <p>
+                        WebSocket прокси работает с nginx, HAProxy из коробки, я не знаю ни одного известного сетевого продукта, где бы не было вебсокетов. Если вы знаете какой-то, расскажите мне.
+                    </p>
+                </div>
+                </section>
+                <section class="section underline">
+                <!-- <div class="hero"></div> -->
+                    <h2>
+                        3. Я слышал что WebSockets работают только по TLS, а не по TLS не работают
+                    </h2>
+                    <!-- <h3>There's innovation in every nanometer.</h3> -->
+                    <div class="list center">
+                        <p>
+                            Это связано с предыдущим мифом, так как некоторые сети могут что-то непроксировать, то люди, чтобы обойти эту проблему а не написать письмо на NIC, устанавливают wss:// по TLS, и естественно по шифрованому трафику ничего не проксируется и якобы обходтся мифическое ограничение.
+                        </p>
+                        <p>
+                            При этом не приводятся доказательства случаем неработоспособности Вебсокетов по зимбабвийским и приднестровским каналам.
+                        </p>
+                    </div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="hero"></div> -->
+                    <h2>
+                        4. Если я включу TLS, чтобы работали вебсокеты, все будет очень медленно
+                    </h2>
+                    <!-- <h3>Get right to work. And play.</h3> -->
+                    <div class="list center">
+                        <p>
+                            nginx умеет терминацию SSL, SPDY работает только по TLS, фейсбук перешел на TLS, гугл и все остальные, у вас 80% приложений в мобилке работает по TLS. Но при этом люди продолжают думать что SSL это меделнно, нехватает ресурсов, потому-то что когда-то было прочитано что 1.66MHz процессор с последней OpenBSD на VAX генерировал PKI ключи 2 дня.
+                        </p>
+                        <p>
+                            Я настоятельно рекомедую использовать TLS во всех приложениях, также рекомендует Илья Григорик, и это не связано с неработающими сетями в Приднестровье и медленными датацентрами ДНР и ЛНР. А связано с тем, что это позволит обеспечить хоть какую-то защиту данных ваших пользователей и кукисов.
+                        </p>
+                    </div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>5. Я слышал что хайп по вебсокетам утих</h2>
+                    <!-- <h3>The world's most advanced desktop operating system.</h3> -->
+                    <div class="list center">
+                        <p>
+                            Хайп утих и по поводу дифференциального исчисления бесконечно малых, и быстрого преобразования Фурье. Если вы пойдете на HN то я бы не сказал что WebSocket хайп утих, возможно вцелом локальное снижение есть, но глобально технология работает даже на SDPY и будуем HTTP/2.
+                        </p>
+                        <p>
+                            Заявления о том, что Вебсокеты прекратят свое существования со дня на день примерно соотвествует заявления о том что Виндовс загнется и Майкрософт станет банкротом. Впрочем это объект обсуждения другого калифорнийского мифа, просто хипстеры Сан-Франциско не в курсе что Haskell родился в Microsoft и благодаря Microsoft.
+                        </p>
+                    </div>
+                    <div class="image websocket-trends"></div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>6. Никто из больших компаний не используют вебсокеты.</h2>
+                    <!-- <h3></h3> -->
+                    <div class="list center">
+                        <p>
+                            Да, это правда, Google+, Facebook все это работает на XHR полинге. Но это не связано с вебсокетами, а с тем, что весь джаваскрипт этого говна генерируется фремворками, типа GWT которые были написаны задолго до Вебсокетов. Эти компании страдают от своей инертности, но при этом эти же компании проводят пиар компании
+                        </p>
+                        <p>
+                            по популяризации SPDY, WebSockets и быстрого интернета, троля себя же и сайти монстры типа NY Times и Bloomberg. Коменты которых сервятся по XHR. Можно перечислять десятки стартапов которые использует WebSockets включая Disqus и другие, но это все делать бессмысленно, для тех кто слеп.
+                        </p>
+                    </div>
+                    <!-- <div class="hero"></div> -->
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>7. Никто не предосталяет графики нагрузочного тестирования вебсокетов.</h2>
+                    <!-- <h3></h3> -->
+                    <div class="list center">
+                        <p>
+                            Это связано с очень плохим качеством утилит нагрузочного тестирования. Единственная утилита, написанная на С, которая может создать рельный шторм вебсерверу которой я тестировал N2O, это wrk, но она не поддерживает вебсокеты.
+                        </p>
+                        <p>
+                            Для WebSockets существует аналогичная wrk утилита — tcpkali, с помощью которой вы легко сможете завалить свои серваки на node.js и Python.
+                        </p>
+                    </div>
+                    <div class="image n2o-benchmark"></div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>8. Я слышал что вебсокеты медленные.</h2>
+                    <!-- <h3></h3> -->
+                    <div class="list center">
+                        <p>
+                            Тут тоже есть картинки. Эта картинка говорит о том, что для бизнес приложений на N2O можно рисовать мультики, которые будут показываться как видео, 50 кадров секунду,
+                        </p>
+                        <p>
+                            причем сюда входит не только доставка сгененерированных HTML/JS форм вместе с валидациями и всем, что нужно энтерпрайзу по вебсокетам, но также сюда входит время рендеринга DOM в браузере.
+                        </p>
+                    </div>
+                    <div class="image pingdom"></div>
+                    <div class="list center">
+                        <p>
+                            Тут рендерится 33 формы, <strong>Your website is faster than 100% of all tested websites</strong> Здесь как видно 28 запросов! Без минификации и без компрессии!
+                        </p>
+                    </div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>9. Докажи мне, что я должен испльзовать WebSockets</h2>
+                    <!-- <h3></h3> -->
+                    <div class="list center">
+                        <p>
+                            Когда я начинал заниматься разработкой N2O, WebSockets их еще не было, были экспериментальные версии протоколов HyBi. Я почитал у Джо Армстронга в блоге, что Вебсокеты это круто, и ничего не знаю о вопросе решил поставить весь свой бизнес на эту технологию.
+                        </p>
+                        <p>
+                            Пока остальные писали свои REST микро фреймворки (<a href="https://github.com/synrc/rest">которых у нас тоже в изобилии</a>), патча свои рельсы, мы вкидывались в технологию, которая еще не поддерживалась браузерами.
+                        </p>
+                    </div>
+                    <div class="image websockets-global-use"></div>
+                    <div class="list center">
+                        <p>
+                            Прошло 5 лет и ситуация такая как на картинке. У меня успешная компании много достаточно больших клиентов, в том числе таких консервативных как банки с десятками миллионов клиентов,
+                        </p>
+                        <p>
+                            игровые компании ААА класса, и просто пользователи N2O, которые используют его для своих проектов меньшего ранга.
+                        </p>
+                    </div>
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>10. У нас умный сервер, мы его настроили чтобы он рубил вебсокеты и у нас не работают вебсокеты.</h2>
+                    <h3>Поэтому вебсокеты говно, потому что у нас они не работают</h3>
+                    <div class="center-inline">
+                        <a class="gallery-link" href="#note2">Смотрите пункт 2.</a>
+                    </div>
+                    <!-- <div class="hero"></div> -->
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>11. Я СТО очень большой компании и протестировал ваши вебсокеты</h2>
+                    <h3>На сайте <a href="http://www.websocket.org/echo.html">websocket.org/echo.html</a> и там у меня вебсокеты не работают на 80 порту!</h3>
+                    <div class="list center">
+                        <p>
+                            Для таких людей мы сделали N2O промо сайт, <a href="http://skyline.synrc.com/chat">skyline.synrc.com/chat</a> там вы можете попробовать зайти с любого устройства и любой сети и убедиться, что вебсокеты у вас работают на 80 порту.
+                        </p>
+                        <p>
+                            А websocket.org писали криворукие хипстеры из Сан-Франциско.
+                        </p>
+                    </div>
+                    <!-- <div class="hero"></div> -->
+                </section>
+                <section class="section underline">
+                    <!-- <div class="icon"></div> -->
+                    <h2>Резюме</h2>
+                    <!-- <h3></h3> -->
+                    <div class="list center">
+                        <p>
+                            Что я хочу сказать. Не используйте вебсокеты, пишите на XHR, используйте whatever you fucking want только не говорите больше, что вы не читали этот текст.
+                        </p>
+                        <p>
+                            Этот текст написан для лодей у кого есть мозг, чтобы услышать friendly advise.
+                        </p>
+                    </div>
+                    <!-- <div class="hero"></div> -->
+                </section>
+            </div>
+            <footer>
+                <div class="content">
+                    <section class="buy-strip underline">
+                        <section class="buy-strip-compare list center">
+                            <div class="mac-icon"></div>
+                            <div>
+                                <div class="logo">
+                                    <div class="title">Максим</div>
+                                    <div class="title-additionally">
+                                        Erlang Monk
+                                    </div>
+                                </div>
+                                <div class="compare">
+                                    <a href="http://5ht.co">5ht.co</a>
+                                </div>
+                            </div>
+                        </section>
+
+                    </section>
+                    <section class="sosumi underline">
+                        <ul>
+                            <li>Follow me on twitter <a href="https://twitter.com/_m_2k">@_m_2k</li>
+                        </ul>
+                    </section>
+                    <nav class="breadcrumbs list left">
+                        <a href="#" class="home">λ</a>
+                        <ol>
+                            <li><a href="http://erlang.one/">ErlangOne</a></li>
+                            <li>Cool Stories</li>
+                        </ol>
+                    </nav>
+                </div>
+            </footer>
+        </div>
+        <script>
+            var mn = document.getElementsByClassName('sticky')[0];
+            var mns = "sticky-enabled";
+            var hdr = document.getElementById('globalnav').offsetHeight;
+            window.onscroll = function() {
+                if (window.pageYOffset > hdr) { mn.classList.add(mns); }
+                else { mn.classList.remove(mns); }
+            };
+        </script>
+    </body>
+</html>
